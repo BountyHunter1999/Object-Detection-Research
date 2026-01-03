@@ -1,0 +1,13 @@
+[project]
+name = "object-detection-research"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.8",
+    "opencv-python>=4.12.0.88",
+]
+
+[dependency-groups]
+dev = []
