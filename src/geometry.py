@@ -3,7 +3,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-img = cv2.imread("data/stop.jpg")
+# img = cv2.imread("data/stop.jpg")
+img = cv2.imread("data/multi-stop.png")
 
 # print(img)
 
