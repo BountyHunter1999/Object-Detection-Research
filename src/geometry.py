@@ -23,6 +23,10 @@ stop_cascade = cv2.CascadeClassifier("classifiers/stop_data.xml")
 # Object less than 20*20 will be rejected
 found = stop_cascade.detectMultiScale(img_gray, minSize=(20, 20))
 
+# Will contain list of lists
+# each inner list contains the location of the image
+print(found)
+
 # Draw rectangles around detected object
 for x, y, w, h in found:
     # `0,255,0` RGB, here it's green color
@@ -38,15 +42,3 @@ cv2.waitKey(0)
 
 # Close all OpenCV windows
 cv2.destroyAllWindows()
-
-# countours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-# for cnt in countours:
-#     rect = cv2.minAreaRect(cnt)
-#     box = cv2.boxPoints(rect)
-
-#     box = np.int0(box)
-#     width, height = rect[1]
-
-#     angle = rect[2]
-#     print(f"Object size: {width}x{height} px, angle: {angle}")
