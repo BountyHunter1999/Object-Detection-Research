@@ -23,8 +23,22 @@ def load_video(video_path):
         raise ValueError(f"Could not open video: {video_path}")
     return videoCapture
 
-def process_video(video_path, frame_count=0, threshold=0.4):
+def process_video(video_path, frame_count=0, threshold=0.4, max_frames=20, output_path=None):
     videoCap = load_video(video_path)
+    
+    # Get video properties for output video
+    fps = int(videoCap.get(cv2.CAP_PROP_FPS))
+    width = int(videoCap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(videoCap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    
+    # Set default output path if not provided
+    if output_path is None:
+        output_path = video_path.replace('.mp4', '_output.mp4')
+    
+    # Create video writer
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+    
     while True:
         # reads one frame from video
         ret, frame = videoCap.read()
@@ -57,15 +71,17 @@ def process_video(video_path, frame_count=0, threshold=0.4):
                     
                     cv2.putText(frame, f"{class_name} {conf:.2f}", (x1, max(y1 - 10, 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
         
-        if frame_count < 20:
-            cv2.imshow("Frame", frame)
-        else:
+        # Write frame to output video
+        out.write(frame)
+        
+        if frame_count >= max_frames - 1:
             break
         
         frame_count += 1
         
     videoCap.release()
-    cv2.destroyAllWindows()
+    out.release()
+    print(f"Output video saved to: {output_path}")
     
 if __name__ == "__main__":
     process_video("data/videos/sample.mp4")
